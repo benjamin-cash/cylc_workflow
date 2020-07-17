@@ -1,0 +1,27 @@
+    [[ufs_C384_restart<year,month,day,hour>]]
+ 
+ # Get common information
+        inherit = SHARE
+ 
+ # Set job script path
+        script = /glade/work/bcash/ufs-s2s-model/cylc/C384/restart/bin/NEMS.job
+ 
+ # Set specific environment variables required by the model run
+        [[[environment]]]            # Local environment information
+         HOSTNAME="cheyenne"         # Preferred hostname
+
+ # Define job submission and directives
+        [[[job]]]
+       batch system=pbs
+       execution time limit = PT6H
+       batch submit command template = qsub %(job)s
+ 
+ # Set the batch directives
+        [[[directives]]]
+       -A = P93300190
+       -N = nems
+       -l = select=14:ncpus=36:mpiprocs=36
+       -q = regular
+       -m = abe
+       -M = bcash@gmu.edu
+

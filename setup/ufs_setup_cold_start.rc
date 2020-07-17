@@ -1,0 +1,11 @@
+# This suite definition controls staging the initial condition files needed for running UFS
+
+[[ufs_setup_cold_start<resol,year,month,day,hour>]]
+
+# Get information from parent suite
+    inherit = SHARE
+
+# Set script
+    script = "python /glade/work/bcash/ufs-s2s-model/cmeps-0.6/cylc/setup/bin/ufs_setup_cold_start.py"
+
+

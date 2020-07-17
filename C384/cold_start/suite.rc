@@ -1,0 +1,55 @@
+[meta]
+    title = "cylc suite for executing UFS from cold start at C384"
+
+# Define parameters for the run
+[cylc]
+    [[parameters]]
+
+# Set start date
+        year = 2011..2019
+        month = 01
+        day = 01
+        hour = 00
+
+# Set resolution variable
+        resol = C384
+
+# Define parameter formats
+    [[parameter templates]]
+       year = _%(year)04d
+       month = %(month)02d
+       day = %(day)02d
+       hour = %(hour)02d
+       resol = _%(resol)s
+
+# Establish dependencies
+[scheduling]
+    [[dependencies]]
+        graph = """
+        ufs_setup_cold_start<resol,year,month,day,hour>=>
+        ufs_C384_cold_start<year,month,day,hour>
+        #ufs_setup_warm_start<year,month,day,hour>=>
+        #ufs_C384_warm_start<year,month,day,hour>
+        """
+
+# This section governs what happens when the code is running
+[runtime]
+   [[SHARE]]
+    [[[environment]]]
+        DATADIR = /glade/work/bcash/ufs-s2s-model/cmeps-0.6/input
+        MODELEXE = /glade/work/bcash/ufs-s2s-model/cmeps-0.6/builddir/NEMS/exe/NEMS.x
+        DT_ICE = 450
+
+    [[[parameter environment templates]]]
+        YEAR = %(year)04d
+        MONTH = %(month)02d
+        DAY = %(day)02d
+        HOUR = %(hour)02d
+        LDATE = %(year)04d%(month)02d%(day)02d%(hour)02d
+        EDATE = %(year)04d-%(month)02d-%(day)02d_%(hour)02d
+        RUNDIR = /glade/scratch/bcash/ufs-s2s-model/coldtest/run/C384/%(year)04d%(month)02d%(day)02d%(hour)02d
+
+# Define the different task components
+%include /glade/work/bcash/ufs-s2s-model/cmeps-0.6/cylc/setup/ufs_setup_cold_start.rc
+%include /glade/work/bcash/ufs-s2s-model/cmeps-0.6/cylc/C384/cold_start/inc/ufs_C384_cold_start.rc
+#%include /glade/work/bcash/ufs-s2s-model/cmeps-0.6/cylc/C384/cold_start/inc/ufs_C384_warm_start.rc
