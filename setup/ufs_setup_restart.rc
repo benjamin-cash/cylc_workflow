@@ -6,6 +6,6 @@
     inherit = SHARE
 
 # Set script
-    script = "python /glade/work/bcash/ufs-s2s-model/cmeps-0.6/cylc/setup/bin/ufs_setup_restart.py"
+    script = "python /work/02441/bcash/stampede2/cylc_workflow/setup/bin/ufs_setup_restart.py"
 
 

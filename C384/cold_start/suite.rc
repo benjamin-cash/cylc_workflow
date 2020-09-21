@@ -6,7 +6,7 @@
     [[parameters]]
 
 # Set start date
-        year = 2011..2019
+        year = 2011
         month = 01
         day = 01
         hour = 00
@@ -26,8 +26,8 @@
 [scheduling]
     [[dependencies]]
         graph = """
-        ufs_setup_cold_start<resol,year,month,day,hour>=>
-        ufs_C384_cold_start<year,month,day,hour>
+        ufs_setup_cold_start<resol,year,month,day,hour>
+        #ufs_C384_cold_start<year,month,day,hour>
         #ufs_setup_warm_start<year,month,day,hour>=>
         #ufs_C384_warm_start<year,month,day,hour>
         """
@@ -36,8 +36,8 @@
 [runtime]
    [[SHARE]]
     [[[environment]]]
-        DATADIR = /glade/work/bcash/ufs-s2s-model/cmeps-0.6/input
-        MODELEXE = /glade/work/bcash/ufs-s2s-model/cmeps-0.6/builddir/NEMS/exe/NEMS.x
+        DATADIR = /work/02441/bcash/stampede2/ufs_input
+        MODELEXE = /scratch/02441/bcash/SMS_Lh6_D.C96_t061.s2s.stampede2-skx_intel.20200716_144629_5abjxr/bld/ufs.exe
         DT_ICE = 450
 
     [[[parameter environment templates]]]
@@ -47,9 +47,9 @@
         HOUR = %(hour)02d
         LDATE = %(year)04d%(month)02d%(day)02d%(hour)02d
         EDATE = %(year)04d-%(month)02d-%(day)02d_%(hour)02d
-        RUNDIR = /glade/scratch/bcash/ufs-s2s-model/coldtest/run/C384/%(year)04d%(month)02d%(day)02d%(hour)02d
+        RUNDIR = /scratch/02441/bcash/ufs-s2s-test/run/C384/%(year)04d%(month)02d%(day)02d%(hour)02d
 
 # Define the different task components
-%include /glade/work/bcash/ufs-s2s-model/cmeps-0.6/cylc/setup/ufs_setup_cold_start.rc
-%include /glade/work/bcash/ufs-s2s-model/cmeps-0.6/cylc/C384/cold_start/inc/ufs_C384_cold_start.rc
-#%include /glade/work/bcash/ufs-s2s-model/cmeps-0.6/cylc/C384/cold_start/inc/ufs_C384_warm_start.rc
+%include /work/02441/bcash/stampede2/cylc_workflow/setup/ufs_setup_cold_start.rc
+%include /work/02441/bcash/stampede2/cylc_workflow/C384/cold_start/inc/ufs_C384_cold_start.rc
+#%include /work/02441/bcash/stampede2/cylc_workflow/C384/warm_start/inc/ufs_C384_warm_start.rc
