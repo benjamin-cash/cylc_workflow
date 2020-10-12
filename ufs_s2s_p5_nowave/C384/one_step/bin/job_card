@@ -1,0 +1,30 @@
+#!/bin/bash -l
+
+set -eux
+
+set +x
+cd $RUNDIR # Go to run directory set by cylc
+source ./module-setup.sh
+module use $( pwd -P )
+module load modules.fcst
+module list
+
+set -x
+
+echo "Model started:  " `date`
+
+export MPI_TYPE_DEPTH=20
+export OMP_STACKSIZE=512M
+export OMP_NUM_THREADS=1
+export ESMF_RUNTIME_COMPLIANCECHECK=OFF:depth=4
+export LD_BIND_NOW=1
+
+# Avoid job errors because of filesystem synchronization delays
+#sync && sleep 1
+
+#mpirun -prepend-rank -np $SBATCH_NP ./fv3.exe
+ibrun   ./fcst_s2s_p5_nowave_onestep.exe
+
+echo "Model ended:    " `date`
+
+exit

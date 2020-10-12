@@ -1,0 +1,55 @@
+[meta]
+    title = "cylc suite for executing UFS from one step start at C384"
+
+# Define parameters for the run
+[cylc]
+    [[parameters]]
+
+# Set start date
+        year = 2012..2017
+        month = 01
+        day = 01
+        hour = 00
+
+# Set resolution variable
+        resol = C384
+
+# Define parameter formats
+    [[parameter templates]]
+       year = _%(year)04d
+       month = %(month)02d
+       day = %(day)02d
+       hour = %(hour)02d
+       resol = _%(resol)s
+
+# Establish dependencies
+[scheduling]
+    [[dependencies]]
+        graph = """
+        ufs_setup_one_step<resol,year,month,day,hour>=>
+        ufs_C384_one_step<year,month,day,hour>
+        """
+
+# This section governs what happens when the code is running
+[runtime]
+   [[SHARE]]
+    [[[environment]]]
+        DATADIR = /work/02441/bcash/stampede2/ufs_input/ufs_s2s_p5_nowave
+        MODELEXE = /work/02441/bcash/stampede2/ufs_input/ufs_s2s_p5_nowave/exec/fcst_s2s_p5_nowave_onestep.exe
+	MODULESETUP = /work/02441/bcash/stampede2/ufs_input/ufs_s2s_p5_nowave/exec
+        DT_ICE = 450
+	NHOURS_FCST=840
+
+    [[[parameter environment templates]]]
+        YEAR = %(year)04d
+        MONTH = %(month)02d
+        DAY = %(day)02d
+        HOUR = %(hour)02d
+	YMDDATE = %(year)04d%(month)02d%(day)02d
+        LDATE = %(year)04d%(month)02d%(day)02d%(hour)02d
+        EDATE = %(year)04d-%(month)02d-%(day)02d_%(hour)02d
+        RUNDIR = /scratch/02441/bcash/ufs_s2s_p5_nowave/run/C384/%(year)04d%(month)02d%(day)02d%(hour)02d/one_step
+
+# Define the different task components
+%include /work/02441/bcash/stampede2/cylc_workflow/ufs_s2s_p5_nowave/setup/ufs_setup_one_step.rc
+%include /work/02441/bcash/stampede2/cylc_workflow/ufs_s2s_p5_nowave/C384/one_step/inc/ufs_C384_one_step.rc

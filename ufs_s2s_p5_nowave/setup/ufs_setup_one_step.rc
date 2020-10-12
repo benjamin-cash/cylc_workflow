@@ -1,0 +1,11 @@
+# This suite definition controls staging the initial condition files needed for running UFS
+
+[[ufs_setup_one_step<resol,year,month,day,hour>]]
+
+# Get information from parent suite
+    inherit = SHARE
+
+# Set script
+    script = "python /work/02441/bcash/stampede2/cylc_workflow/ufs_s2s_p5_nowave/setup/bin/ufs_setup_one_step.py"
+
+

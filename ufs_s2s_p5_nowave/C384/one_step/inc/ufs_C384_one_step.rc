@@ -1,0 +1,25 @@
+    [[ufs_C384_one_step<year,month,day,hour>]]
+ 
+ # Get common information
+        inherit = SHARE
+ 
+ # Set job script path
+        script = /work/02441/bcash/stampede2/cylc_workflow/ufs_s2s_p5_nowave/C384/one_step/bin/job_card
+ 
+ # Set specific environment variables required by the model run
+        [[[environment]]]            # Local environment information
+         HOSTNAME="stampede"         # Preferred hostname
+
+ # Define job submission and directives
+        [[[job]]]
+       batch system=slurm
+       execution time limit = PT15H
+       batch submit command template = sbatch %(job)s
+ 
+ # Set the batch directives
+        [[[directives]]]
+	--account = TG-ATM190009
+	--partition = skx-normal
+	--nodes = 7
+	--ntasks = 318
+	--job-name = one_C384.$LDATE
